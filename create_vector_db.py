@@ -1,5 +1,6 @@
 import ray
 import yaml
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
@@ -10,11 +11,10 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 
-
 # Open the YAML settings file
 with open('settings.yml', 'r') as file:
     # Load the YAML data
-    data = yaml.load(file, Loader=yaml.FullLoader)
+    settings = yaml.load(file, Loader=yaml.FullLoader)
 
 
 
@@ -39,8 +39,7 @@ def process_text(efs_dir: str) -> ray.data.Dataset:
     return sections_ds
 
 
-EFS_DIR = "/home/imoustakas/llm_playground/RAG/django_docs/"
-sections_ds = process_text(efs_dir=EFS_DIR, )
+sections_ds = process_text(efs_dir=settings['paths']['efs_dir'], )
 
 
 def chunk_section(section, chunk_size: int, chunk_overlap: int) -> list:
